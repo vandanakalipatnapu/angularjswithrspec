@@ -1,0 +1,182 @@
+<html ng-app = "app2">
+	<style>
+		.clr{color:red;}
+		.star{color:red;}
+		.back{float: right;}
+	</style>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+
+
+	<body>
+		<div class="container" ng-controller="formsController"><!--div container-->
+		<center><h2 class = "text-danger">Registration Form</h2></center>
+			
+			<input type = "button" value = "New Student" class = "btn btn-sm btn-info" ng-click = "newStudent(1)">
+			<div class = "newstudent" ng-if = "newStudentValue==1">
+
+			<center><h2 class="text-danger">New Student</h2></center>
+			<hr/>
+			
+
+				<form class="form-horizontal form-success" name = "studentform" role = "form"   ><!--form starting-->
+			    
+			    <div class="form-group has-success" ><!--name div starting-->
+			      <label class="control-label col-sm-4"for ="name"><span class="star">*</span> Student Name:</label>
+			       		
+			      <div class="col-sm-4">
+			        <input type="text" name="name" ng-model="student.name" class="form-control" placeholder="Student Name"ng-pattern="/[a-z|A-Z|\s]/"required/>
+			        		
+			        <span ng-show = "studentform.name.$dirty && studentform.name.$invalid">
+			        <span ng-show = "studentform.name.$error.required " class = "clr">Name is required</span>
+			        <span ng-show = "studentform.name.$error.pattern" class = "clr">Enter name in correct format</span>
+			      </div>
+			  	</div><!--name div ending-->
+
+			    <div class = "form-group has-success"><!--email div starting-->
+			      <label class = "control-label col-sm-4" for = "email"><span class = "star">*</span>Email: </label>
+
+			      <div class = "col-sm-4">
+			      	<input type = "email" name = "email" ng-model = "student.email" class = "form-control" placeholder="Email" required/>
+			      		
+			      	<span ng-show = "studentform.email.$dirty && studentform.email.$invalid">
+			      	<span ng-show = "studentform.email.$error.required" class = "clr">Email is required</span>
+			      	<span ng-show = "studentform.email.$error.email"class = "clr">Enter valid Email</span></span>
+
+			      	<span ng-hide = "studentform.email.$valid">
+			      	<span ng-hide = "studentform.email.$error.required" class = "clr"></span>
+			      	<span ng-hide = "studentform.email.$error.email"class = "clr"></span></span>
+			      </div>
+
+					</div><!--email div ending-->
+
+				<div class="form-group has-success" ><!--dob div starting-->
+			      <label class="control-label col-sm-4"for ="name"><span class="star">*</span> Student DOB:</label>
+			       		
+			    <div class="col-sm-4">
+			        <input type="text" name="dob" ng-model="student.dob" class="form-control" placeholder="dd/mm/yyyy"ng-pattern="/\d{2}\/\d{2}\/\d{4}/"required/>
+			        		
+			        <span ng-show = "studentform.dob.$dirty && studentform.dob.$invalid">
+			        <span ng-show = "studentform.dob.$error.required " class = "clr">dob is required</span>
+			        <!-- <span ng-show = "studentform.dob.$error.pattern" class = "dobclr">Enter dob in correct format</span> -->
+			      </div>
+			  	</div><!--dob div ending-->
+
+
+			  	<div class="form-group has-success" ><!--dob div starting-->
+			      <label class="control-label col-sm-4"for ="age"><span class="star">*</span> Student Age:</label>
+			       		
+			    <div class="col-sm-4">
+			        <input type="text" name="age" ng-model="student.age" class="form-control" placeholder="Enter age"ng-pattern="/[0-9]/"required/>
+			        		
+			        <span ng-show = "studentform.age.$dirty && studentform.age.$invalid">
+			        <span ng-show = "studentform.age.$error.required " class = "clr">age is required</span>
+			        <span ng-show = "studentform.age.$error.pattern" class = "clr">Enter age in correct format</span>
+			      </div>
+			  	</div><!--dob div ending-->
+
+					
+					<div class="form-group"><!--buttons div starting-->
+			     	<div class="col-sm-offset-4 col-sm-4">
+			     		<input type="submit" value="Submit" class= "btn btn-info btn-sm" ng-click="create(student);"/>
+			     		<input type="button" value="Back" class="btn btn-info btn-sm" ng-click="newStudent(0)"/> 
+			     		<input type="submit" value="Update" class= "btn btn-info btn-sm" ng-click = "update(student.id)"/>   
+			     	</div>
+			    </div><!--buttons div ending-->
+
+			     			{{student.name}}
+
+			  </form>
+
+			 <hr/>
+			 </div>
+			
+			<div><!--create-->
+			 <h2 class = "text-danger">Student Details:</h2>
+				Student Name:{{student_details.name}}<br/>
+				Date of birth:{{student_details.dob}}<br/>
+				Age:{{student_details.age}}<br/>
+				Email:{{student_details.email}}<br/>
+			</div><!--create-->
+			<hr/>
+		
+			<div><!--index-->
+				<center><h2 class= "text-danger">All Students</h2></center>
+		<input type = "button" ng-click = "allStudents(1)" value = "All Students" class = "btn btn-sm btn-info">
+		
+		<input type = "button" ng-click = "allStudents(0)" value = "Back" class = "btn btn-sm btn-info back">
+		
+		<div class = "allStudents" ng-if = "allStudentsValue== 1">
+				
+					<div ng-repeat="student in students"><!--ng-repeat-->
+						<div class = "text-success">Student Name : {{student.name}}</div>
+						<div class = "text-success">Email : {{student.email}}</div>
+						<div class = "text-success">Date of birth : {{student.dob}}</div>
+						<div class = "text-success">Age : {{student.age}}</div>
+
+						
+						<!-- <input type="button" value="Show" class= "btn btn-info btn-sm" ng-click = "show(student.id)"/> -->
+							<input type="button" value="Delete" class= "btn btn-info btn-sm" ng-click = "destroy(student.id)" />
+						<input type="button" value="Edit" class= "btn btn-info btn-sm" ng-click = "edit_student(student.id)"/>
+
+						<input type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal" ng-click = "show(student.id)" value = "Show">
+					
+					<!-- Modal -->
+							<div id="myModal" class="modal fade" role="dialog">
+  							<div class="modal-dialog">
+
+    			<!-- Modal content-->
+	    						<div class="modal-content">
+	      						<div class="modal-header">
+	        						<button type="button" class="close" data-dismiss="modal">&times;</button>
+	        						<h4 class="modal-title">Student Show</h4>
+	      						</div>
+	      					
+	      						<div class="modal-body">
+	        						<table class="table table-hover">
+    										<tr>
+    											<th>Student Name:</th>
+    											<td>{{student_show.name}}</td>
+    										</tr>
+
+    										<tr>
+    											<th>Email:</th>
+    											<td>{{student.email}}</td>
+    										</tr>
+
+    										<tr>
+    											<th>Date of birth</th>
+    											<td>{{student.dob}}</td>
+    										</tr>
+
+    										<tr>
+    											<th>Age</th>
+    											<td>{{student.age}}</td>
+    										</tr>
+     
+  										</table>
+	      						</div>
+	      						<div class="modal-footer">
+	        						<button type="button" class="btn btn-sm btn-info" data-dismiss="modal">Close</button>
+	     							</div>
+	    						</div>
+
+  							</div>
+							</div>
+						<!--modal-->
+						<hr/>
+					</div><!--ng-repeat-->
+		</div>
+			</div><!--index-->
+		 
+		</div><!--div container-->
+	</body>	
+
+	<script src = "newform.js"></script>
+
+</html>
+
